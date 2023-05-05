@@ -1,15 +1,18 @@
 ## React Server Components
+
 #### The Costs & The Benefits
 
 Hey there, I'm Jeff and I am thrilled to be with you all today to talk a little about React Server Components.
 
 ---
-## Who am I Anyway?
-	- Made websites @ HashiCorp
-	- Next.js eng manager @ Vercel
-	- Now working @ Clerk
 
-Before we get into it, some quick background on me, let's rewind 5 years of my career. At this point I was starting as the first engineer and later manager of the team at HashiCorp that builds and maintains all of its public websites, like docs, events, marketing, etc. 
+## Who am I Anyway?
+
+    - Made websites @ HashiCorp
+    - Next.js eng manager @ Vercel
+    - Now working @ Clerk
+
+Before we get into it, some quick background on me, let's rewind 5 years of my career. At this point I was starting as the first engineer and later manager of the team at HashiCorp that builds and maintains all of its public websites, like docs, events, marketing, etc.
 
 This is what originally got me involved with next.js. As HashiCorp scaled from ~200 to ~2500 employees and IPO'd over my 4 years there, we heavily invested in next and its architecture to help us scale up.
 
@@ -19,13 +22,14 @@ Now as of this month I'm working at Clerk! Big thanks to Ben for making the intr
 
 ---
 
-![](media/Tweet by Guillermo Rauch.png)
+![](media/g-tweet.png)
 
 And just some extra context in case you didn't believe me - I have been really in deep on nextjs and react for years.
 
 ---
 
 # Zooming out on React Architectures
+
 #### Because I'm not that smart and need lots of context 😅
 
 ![](media/annie-spratt-tKla6vT466U-unsplash.jpg)
@@ -39,9 +43,10 @@ So in the following slides, we'll step through the different react architectures
 ---
 
 # Pure Client React (SPA)
-	- client-side only
-	- use browser apis with impunity
-	- don't deal with servers
+
+    - client-side only
+    - use browser apis with impunity
+    - don't deal with servers
 
 Let's start with the most basic possible way to use react - just loading it on to a website with a script tag. With all the talk about frameworks we may have forgotten that this is a real thing, but it absolutely is.
 
@@ -53,24 +58,25 @@ A normal setup for this type of app is to run a server or proxy in front of your
 
 ![](media/diagram.svg)
 
-
 Something like this - every route, regardless of the url, returns the same page.
 
 Then on the client side, javascript looks at the URL and decides how to render the page once it has loaded.
 
 ---
+
 # The Downsides:
-	- SEO is bad
-	- initial load is slow
+
+    - SEO is bad
+    - initial load is slow
 
 The problem with this is that search engines and social share crawlers mostly don't render javascript, so they just see a blank html document, which is bad news.
 
-Also, the initial page load is slow since the browser needs to receive the full response, parse the javascript, execute it, and flush the changes to the DOM changes before the user sees anything.
----
+## Also, the initial page load is slow since the browser needs to receive the full response, parse the javascript, execute it, and flush the changes to the DOM changes before the user sees anything.
 
 # Server Rendered React (SSR)
-	- runs on client & server
-	- initial load becomes fast, SEO is great
+
+    - runs on client & server
+    - initial load becomes fast, SEO is great
 
 Ok, on to the next react architecture, server rendered react, which you might see abbreviated as "SSR", which stands for "server side rendering". In this mode, you render the initial state of each page into a string of html on the server, and send that html as the response, so the user immediately sees the page's contents.
 
@@ -79,10 +85,12 @@ However, the page doesn't do anything because it's all static html. React then l
 This is very cool because it eliminates both of the downsides of pure client side react: you get a fast initial load since the html is all there, and SEO works fine because the html is all there. But it doesn't come without its own downsides either.
 
 ---
+
 # The Downsides:
-	- the same code needs to run in browser & node.js
-	- you need to figure out hydration
-	- you need to run & manage an actual server
+
+    - the same code needs to run in browser & node.js
+    - you need to figure out hydration
+    - you need to run & manage an actual server
 
 The essence of the downsides here are that it's more complicated than pure client react, but that's a very real downside.
 
@@ -102,7 +110,6 @@ Figuring out why this happened and how to fix it requires a solid understanding 
 
 ![](media/graph.svg)
 
-
 So, between these two cases, we effectively have a tradeoff: in exchange for more complexity and more surface area for issues and errors, we get better performance. So, we can visualize this as something of a graph with the axes being performance benefits and code complexity.
 
 You have no doubt heard many folks declare one or the other to be objectively superior in all circumstances, but nothing could be further from the truth. Whether the tradeoffs of moving from pure client to server rendered react are worth it depends entirely on the situation.
@@ -113,13 +120,11 @@ For example, if you are running a small startup that you need to get off the gro
 
 ![](media/dashboard.svg)
 
-
 In this case, the graph shifts a bit - suddenly you are getting a lot less benefit for the same increase in complexity, so you may decide that it's not worth it.
 
 ---
 
 ![](media/marketing-page.svg)
-
 
 On the other hand, if you expect to make some dashboards public, or make user profiles shareable, you start to move closer to it being worth it. And if you are building something like a marketing page, where SEO and initial load are critical to its success, going pure client side react probably would not be a good idea - the performance benefit becomes much higher relative to the complexity.
 
@@ -127,15 +132,13 @@ On the other hand, if you expect to make some dashboards public, or make user pr
 
 ![](media/frameworks.svg)
 
-
 It's also worth noting that the complexity of an architecture is not hard set. As I mentioned earlier, tools and frameworks can deliver the same benefits at reduced complexity. And frameworks like next, Gatsby, and others have shifted the complexity of server rendered architecture down substantially and made it more widely accessible.
 
 I hope that this framework helps when making decisions about architecture. But now that we have spent quite a while setting up the context, let's talk about where react server components sits on this spectrum.
 
 ---
 
-![](media/third-arch_3.svg)
-
+![](media/third-arch.svg)
 
 **It's important not think about react as a single tech choice or single architecture, because it isn't.** Server rendered react is an entirely different thing from SPA react. And Server Component react is an entirely different thing from the two that we have discussed.
 
@@ -146,20 +149,22 @@ With that all said, let's profile the upsides and downsides of RSC in the same w
 ---
 
 # React Server Components
-	- faster rendering with streaming
-	- parallel, non-blocking data loading by default
-	- more control and granularity for caching
-	- hydrate only what is needed
+
+    - faster rendering with streaming
+    - parallel, non-blocking data loading by default
+    - more control and granularity for caching
+    - hydrate only what is needed
 
 The upsides effectively amount to what we have said earlier: better performance for complex apps. And this is extra impactful because the larger and more complex the apps, the more important performance becomes, because scale. We'll break down each of these in more detail right after this. First, on to the downsides.
 
 ---
 
 # The Downsides:
-	- server-only rendering is an entirely new render environment
-	- you must be in control of what hydrates and doesn't
-	- server/infra does more work, possible downside
-	- it's still pretty beta-ish
+
+    - server-only rendering is an entirely new render environment
+    - you must be in control of what hydrates and doesn't
+    - server/infra does more work, possible downside
+    - it's still pretty beta-ish
 
 Again it's been mentioned earlier that the tl;dr of these points is "it's more complicated", but let's get more specific. With client only react there was only one rendering environment: the client. SSR added a second one: client & server. And with RSC we have a third: server only.
 
@@ -170,6 +175,7 @@ Also worth mentioning, if you are managing your own servers, RSC does more work 
 And then of course there's the fact that this is all still quite new, and on top of that it has taken a REALLY LONG time to figure out, with a lot of missteps along the path. Let's dig into that for a minute.
 
 ---
+
 ## The Rocky Path to RSC
 
 ![](media/malte-schmidt-HcGQhfQrQOk-unsplash.jpg)
@@ -180,7 +186,7 @@ The pattern was first adopted and released for general use by Shopify's framewor
 
 ---
 
-![](media/Tweet by Josh Larson.png)
+![](media/josh-tweet.png)
 
 I'm just quoting one tweet here but I'll link to the whole thread too in the notes:
 
@@ -198,11 +204,12 @@ This was a big release, at the time I was managing the next.js team and this was
 
 However, the release was still definitely very beta, and the concept of RSC was far from being accepted by the community. It's a little further along now but still has a ways to go - the only major framework implementation of RSC is still beta, and there have been lots of discussions and back-and-forth on twitter etc. about the complexities of the architecture.
 
-With that said, let's get into some of the architecture differences, starting in broad strokes. 
+With that said, let's get into some of the architecture differences, starting in broad strokes.
 
 ---
 
 ### ➕ New Rendering Environment (server only)
+
 ### ➕ Different rendering environments can be mixed
 
 We mentioned a couple slides ago that RSC introduced a new rendering environment, server-only. That alone is a large mental shift in understanding, loosely equivalent to the shift between client-only react and server-rendered react, which was a very big shift that everyone still has not entirely accepted.
@@ -211,16 +218,13 @@ But RSC adds more on top of that - it adds a dynamic in which server only and cl
 
 ---
 
-![](media/carbon (5).png)
-
+![](media/server-nest-client.png)
 
 Here you can see a client component nested inside a server component. The server component is only rendered on the server and doesn't ship any javascript to the client. The client component is rendered on the server and hydrates on the client.
 
 ---
 
-![](media/carbon (4).png)
-
-
+![](media/client-nest-server.png)
 
 So the natural next step here is, what happens if you flip this around and put a server component into a client component? In theory it should render the client component and inject a server component that isn't hydrated.
 
@@ -232,8 +236,7 @@ So like, there is a bit more complexity to deal with here the way client and ser
 
 ---
 
-![](media/Tweet by дэн.png)
-
+![](media/dan-tweet-1.png)
 
 But this is just the beginning. There are lots of other edge cases and behaviors to consider with this type of nesting, including what re-renders when, and how data flows through these boundaries.
 
@@ -243,15 +246,13 @@ The premise here is that we have a client component wrapping a server component,
 
 ---
 
-![](media/Tweet by дэн (1).png)
-
+![](media/dan-tweet-2.png)
 
 And here's a followup, now the idea is that you have toggled the client component to show the server component, like the last slide, but you have now mutated the data in the server component and told react to refresh the route to reflect this. The question here is, does the state on the wrapping client component get reset as part of this refresh and the server component becomes hidden again?
 
 ---
 
-![](media/Tweet by дэн (2).png)
-
+![](media/dan-tweet-3.png)
 
 And a second followup - now we have a client component wrapping server components again, and a change is made to the client component which could possibly affect the contained server components, so are they refetched from the server and re-rendered?
 
@@ -262,10 +263,11 @@ So, why go for it at all then?
 ---
 
 # React Server Components
-	- faster rendering with streaming
-	- parallel, non-blocking data loading by default
-	- 	hydrate only what is needed
-	- more control and granularity for caching **(demo incoming)**
+
+    - faster rendering with streaming
+    - parallel, non-blocking data loading by default
+    - 	hydrate only what is needed
+    - more control and granularity for caching **(demo incoming)**
 
 Remember this slide? This is why. And the tl;dr here is, if you have a very large, very complex app operating at high scale, these benefits are super strong and lead to better performance that we could possibly achieve with non-rsc react.
 
@@ -300,7 +302,7 @@ And of course, frameworks will always be trying to drop the complexity curve dow
 
 ---
 
-## 💖 
+## 💖
 
 Thank you so much for bearing with me through this and I really hope it was interesting! Looking forward to hanging out with you all and chatting more about this stuff.
 
