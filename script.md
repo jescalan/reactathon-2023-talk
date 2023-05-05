@@ -276,7 +276,6 @@ We saw some examples of streaming rendering and non-blocking data loading in Sha
 ---
 
 ![](media/live.gif)
-Background: media/true
 
 Sooooo let's do some live coding! Because I do this in every conference talk I have done and it has definitely never gone wrong 😂
 
